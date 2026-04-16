@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>💍 Couple Dashboard</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card p-3">
+      <h4>Total Memories: {{ memories }}</h4>
+      <h4>Pending: {{ pending }}</h4>
+    </div>
+  </div>
+</div>
+
+<h4 class="mt-4">Latest RSVPs</h4>
+<ul>
+  {% for r in rsvps %}
+    <li>{{ r.name }} - {{ r.email }}</li>
+  {% endfor %}
+</ul>
+
+<h4>Guest Messages</h4>
+<ul>
+  {% for m in messages %}
+    <li>{{ m.name }}: {{ m.message }}</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

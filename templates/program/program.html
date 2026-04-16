@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-center mb-5 mt-5">Wedding Program Outline 📅</h2>
+
+<!-- 📸 PROGRAM POSTER -->
+<div class="text-center mb-4">
+
+  <img src="/static/images/program.png"
+       class="img-fluid rounded shadow"
+       style="max-height:500px; object-fit:cover;">
+
+</div>
+
+<div class="timeline">
+
+  {% for event in events %}
+    <div class="timeline-item mb-4 p-3 card">
+      <h5 class="text-primary">{{ event.time }}</h5>
+      <h4>{{ event.title }}</h4>
+      <p>{{ event.description }}</p>
+    </div>
+ 
+  {% endfor %}
+
+</div>
+
+<style>
+.timeline {
+  max-width: 600px;
+  margin: auto;
+}
+
+.timeline-item {
+  border-left: 4px solid #d63384;
+}
+</style>
+
+{% endblock %}

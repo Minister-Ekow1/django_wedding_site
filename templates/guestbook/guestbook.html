@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-center mb-4 mt-5">Guestbook 💌</h2>
+
+{% if messages %}
+  {% for msg in messages %}
+    <div class="alert alert-success text-center">
+      {{ msg }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="row">
+
+  <!-- FORM -->
+  <div class="col-md-5">
+    <div class="card p-3">
+      <h5>Leave a Blessing 💕</h5>
+
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="btn btn-primary w-100">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="col-md-7">
+    <h5 class="mb-3">Messages</h5>
+
+    {% for m in messages_list %}
+      <div class="card mb-2 p-3">
+        <strong>{{ m.name }}</strong>
+        <p class="mb-0">{{ m.message }}</p>
+      </div>
+    {% empty %}
+      <p>No messages yet 💕</p>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}

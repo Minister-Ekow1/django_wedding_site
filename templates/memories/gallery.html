@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-center mb-4 mt-5">Our Memories 💕</h2>
+
+<div class="text-center mb-4">
+  <a href="{% url 'submit_memory' %}" class="btn btn-primary">
+    Share a Memory
+  </a>
+</div>
+
+<div class="row">
+  {% for m in memories %}
+  <div class="col-md-4 mb-4">
+
+    <div class="card">
+
+      {% if m.image %}
+        <img src="{{ m.image.url }}" class="w-100" style="height:250px;object-fit:cover;">
+      {% elif m.video %}
+        <video controls style="width:100%;height:250px;">
+          <source src="{{ m.video.url }}">
+        </video>
+      {% endif %}
+
+      <div class="p-3">
+        <h5>{{ m.title }}</h5>
+        <p>{{ m.caption }}</p>
+
+        {% if m.story %}
+        <button class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modal{{ m.id }}">
+          Read Story
+        </button>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+ <!-- MODAL -->
+<div class="modal fade" id="modal{{ m.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-4">
+
+      <div class="modal-header">
+        <h5 class="modal-title">{{ m.title }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p>{{ m.story }}</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+  {% endfor %}
+</div>
+
+{% endblock %}

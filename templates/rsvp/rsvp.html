@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center mt-4">
+  <div class="col-md-6">
+
+    <div class="card p-4">
+
+      <h2 class="text-center mb-3">RSVP 💌</h2>
+
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="alert alert-success text-center">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label>Name</label>
+          {{ form.name }}
+        </div>
+
+        <div class="mb-3">
+          <label>Email</label>
+          {{ form.email }}
+        </div>
+
+        <div class="mb-3">
+          <label>Will you attend?</label>
+          {{ form.attending }}
+        </div>
+
+        <div class="mb-3">
+          <label>Number of Guests</label>
+          {{ form.guests }}
+        </div>
+
+        <div class="mb-3">
+          <label>Dietary Preferences</label>
+          {{ form.dietary_preferences }}
+        </div>
+
+        <button class="btn btn-primary w-100">
+          Submit RSVP
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
