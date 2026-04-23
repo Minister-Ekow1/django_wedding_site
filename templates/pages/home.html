@@ -3,47 +3,82 @@
 {% block fullwidth %}
 
 <style>
-  html, body {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  .container {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  nav {
-    margin-bottom: 0 !important;
-    position: relative;
-    z-index: 1000;
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .hero-wrapper {
-    margin-top: 0 !important;
     width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    max-width: 100vw;
+    box-sizing: border-box;
   }
 
   .hero {
-    position: relative;
     width: 100vw;
     height: 100vh;
+    min-height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    position: relative;
     overflow: hidden;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   .hero video {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
     object-fit: cover;
+    max-width: none;
+    max-height: none;
+    box-sizing: border-box;
+  }
+
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100svh;
+    min-height: 400px;
+    overflow: hidden;
+    max-width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  .hero video {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100svh;
+    min-height: 100%;
+    min-width: 100%;
+    object-fit: cover;
+    max-width: none;
+    max-height: none;
   }
 
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0, 0, 0, 0.45);
   }
 
   .hero-content {
@@ -56,17 +91,52 @@
     justify-content: center;
     color: white;
     text-align: center;
+    padding: 0 1rem;
   }
 
   .hero-content h1 {
-    font-size: 48px;
+    font-size: 8vw;
     font-family: "Georgia", serif;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .hero-content p {
+    font-size: 1.5rem;
   }
 
   .countdown {
-    margin-top: 20px;
-    font-size: 22px;
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
     color: #f8d7da;
+  }
+
+  @media (max-width: 600px) {
+
+    .hero-wrapper,
+    .hero {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      left: 0;
+      margin-left: 0;
+    }
+
+    .hero video {
+      width: 100vw;
+      height: 100vh;
+      min-width: 100vw;
+      min-height: 100vh;
+    }
+
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+
+    .hero-content p,
+    .countdown {
+      font-size: 1rem;
+    }
   }
 </style>
 
@@ -80,7 +150,7 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-      <h1>💍 Our Forever Begins</h1>
+      <h1>💍Our Forever Begins</h1>
       <p>Join us as we celebrate love and a lifetime together.</p>
       <div id="countdown" class="countdown"></div>
     </div>
@@ -89,27 +159,27 @@
 </div>
 
 <script>
-const date = new Date("{{ wedding_date|date:'Y-m-d' }}T10:00:00").getTime();
+  const date = new Date("{{ wedding_date|date:'Y-m-d' }}T10:00:00").getTime();
 
-function updateCountdown() {
-  const now = new Date().getTime();
-  const diff = date - now;
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = date - now;
 
-  if (diff <= 0) {
-    document.getElementById("countdown").innerHTML = "💍 Today is the big day!";
-    return;
+    if (diff <= 0) {
+      document.getElementById("countdown").innerHTML = "💍 Today is the big day!";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("countdown").innerHTML =
+      `${days}days • ${hours}hours • ${mins}minutes • ${secs}seconds 💕`;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const mins = Math.floor((diff / (1000 * 60)) % 60);
-  const secs = Math.floor((diff / 1000) % 60);
-
-  document.getElementById("countdown").innerHTML =
-    `${days}days • ${hours}hours • ${mins}minutes • ${secs}seconds 💕`;
-}
-
-setInterval(updateCountdown, 1000);
+  setInterval(updateCountdown, 1000);
 </script>
 
 {% endblock %}

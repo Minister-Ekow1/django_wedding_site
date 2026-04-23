@@ -1,39 +1,98 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2 class="text-center mb-5 mt-5">Wedding Program Outline 📅</h2>
+<h2 class="text-center mb-5 mt-3">
+  {{ settings.title }}
+</h2>
 
-<!-- 📸 PROGRAM POSTER -->
-<div class="text-center mb-4">
+<div class="container">
 
-  <img src="/static/images/program.png"
-       class="img-fluid rounded shadow"
-       style="max-height:500px; object-fit:cover;">
+  <div class="row align-items-start">
 
-</div>
+    <!-- LEFT: PROGRAM POSTER -->
+    <div class="col-md-5 text-center mb-4">
 
-<div class="timeline">
+      {% if settings.poster %}
+      <img src="{{ settings.poster.url }}"
+           class="img-fluid rounded shadow poster-img">
+      {% endif %}
 
-  {% for event in events %}
-    <div class="timeline-item mb-4 p-3 card">
-      <h5 class="text-primary">{{ event.time }}</h5>
-      <h4>{{ event.title }}</h4>
-      <p>{{ event.description }}</p>
     </div>
- 
-  {% endfor %}
+
+    <!-- RIGHT: TIMELINE -->
+    <div class="col-md-7">
+
+      <div class="timeline">
+
+        {% for event in events %}
+        <div class="timeline-item card p-3 mb-4">
+
+          <div class="d-flex align-items-center mb-2">
+            <span class="time-badge">{{ event.time }}</span>
+            <h5 class="ms-3 mb-0">{{ event.title }}</h5>
+          </div>
+
+          <p class="text-muted mb-0">{{ event.description }}</p>
+
+        </div>
+        {% empty %}
+          <p>No program added yet 💍</p>
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
 <style>
-.timeline {
-  max-width: 600px;
-  margin: auto;
+
+/* POSTER */
+.poster-img {
+  max-height: 600px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
+.poster-img:hover {
+  transform: scale(1.03);
+}
+
+/* TIMELINE */
+.timeline {
+  padding-left: 10px;
+}
+
+/* EVENT CARD */
 .timeline-item {
   border-left: 4px solid #d63384;
+  border-radius: 15px;
+  transition: all 0.3s ease;
 }
+
+.timeline-item:hover {
+  transform: translateY(-5px);
+}
+
+/* TIME BADGE */
+.time-badge {
+  background: #d63384;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+  .poster-img {
+    max-height: 400px;
+  }
+}
+
 </style>
 
 {% endblock %}

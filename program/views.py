@@ -1,6 +1,11 @@
 from django.shortcuts import render
-from .models import ProgramEvent
+from .models import Event, ProgramSettings
 
-def program_view(request):
-    events = ProgramEvent.objects.all().order_by('time')
-    return render(request, 'program/program.html', {'events': events})
+def program(request):
+    events = Event.objects.all()
+    settings = ProgramSettings.objects.first()
+
+    return render(request, 'program/program.html', {
+        'events': events,
+        'settings': settings
+    })

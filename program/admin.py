@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import ProgramEvent
+from .models import Event, ProgramSettings
 
-@admin.register(ProgramEvent)
-class ProgramEventAdmin(admin.ModelAdmin):
-    list_display = ('time', 'title')
+admin.site.register(Event)
+admin.site.register(ProgramSettings)

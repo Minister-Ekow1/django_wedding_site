@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<h2 style="margin-bottom:20px;">Welcome 💖</h2>
+
+<div class="dashboard-grid">
+
+  <a href="/admin/pages/about/" class="card">
+    <h3>📖 About Page</h3>
+    <p>Edit love story</p>
+  </a>
+
+  <a href="/admin/pages/venue/" class="card">
+    <h3>📍 Venue</h3>
+    <p>Update location</p>
+  </a>
+
+  <a href="/admin/program/event/" class="card">
+    <h3>📅 Program</h3>
+    <p>Manage timeline</p>
+  </a>
+
+  <a href="/admin/memories/memory/" class="card">
+    <h3>📸 Memories</h3>
+    <p>View uploads</p>
+  </a>
+
+  <a href="/admin/rsvp/rsvp/" class="card">
+    <h3>📩 RSVP</h3>
+    <p>Guest responses</p>
+  </a>
+
+  <a href="/admin/guestbook/message/" class="card">
+    <h3>💌 Guestbook</h3>
+    <p>Approve messages</p>
+  </a>
+
+</div>
+
+{% endblock %}

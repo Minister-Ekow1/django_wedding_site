@@ -1,0 +1,79 @@
+body {
+    background: #fffafc;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+/* 💎 HEADER */
+#header {
+    background: #fff !important;
+    border-bottom: 2px solid #f8d7e3;
+    box-shadow: 0 2px 8px rgba(214, 51, 132, 0.04);
+}
+
+/* 🧱 GRID */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+/* 🪄 CARD */
+.card {
+    background: white;
+    padding: 24px 20px 20px 20px;
+    border-radius: 18px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 10px 30px rgba(214, 51, 132, 0.08);
+    transition: 0.2s box-shadow, 0.2s transform, 0.2s background;
+    border: 1px solid #f8d7e3;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-7px) scale(1.03);
+    background: #fff0f5;
+    box-shadow: 0 16px 40px rgba(214, 51, 132, 0.13);
+    border-color: #d63384;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #d63384;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+}
+
+.card p {
+    color: #666;
+    margin-bottom: 0;
+    font-size: 1rem;
+}
+
+/* 💍 Soft wedding feel */
+.content-wrapper {
+    background: #fffafc;
+}
+
+/* 💖 Cards */
+.card {
+    border-radius: 15px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* ✨ Hover effect */
+.card:hover {
+    transform: translateY(-3px);
+    transition: 0.3s;
+}
+
+/* 🌸 Sidebar */
+.main-sidebar {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* 💎 Navbar */
+.main-header {
+    border-bottom: 2px solid #f8d7e3;
+}

@@ -133,60 +133,28 @@
       <h4 class="mb-4">💍 Our Journey</h4>
 
       <div class="timeline">
-
-        <div class="timeline-item">
-          <h5>✨ First Meeting</h5>
-          <p>The day our story began.</p>
-        </div>
-
-        <div class="timeline-item">
-          <h5>💬 Becoming Friends</h5>
-          <p>Countless conversations and laughter.</p>
-        </div>
-
-        <div class="timeline-item">
-          <h5>❤️ Falling in Love</h5>
-          <p>When everything just felt right.</p>
-        </div>
-
-        <div class="timeline-item">
-          <h5>💍 The Proposal</h5>
-          <p>A yes that changed everything.</p>
-        </div>
-
-        <div class="timeline-item">
-          <h5>🎉 Wedding Day (April 25, 2026)</h5>
-          <p>The beginning of forever.</p>
-        </div>
-
-      </div>
+  {% for item in timeline %}
+  <div class="timeline-item">
+    <h5>{{ item.title }}</h5>
+    <p>{{ item.description }}</p>
+  </div>
+  {% endfor %}
+</div>
     </div>
 
     <!-- CENTER: IMAGE -->
     <div>
-      <img src="/static/images/couple.jpg" class="couple-img" alt="Our Love Story">
+      {% if about.image %}
+  <img src="{{ about.image.url }}" class="couple-img">
+{% endif %}
     </div>
 
     <!-- RIGHT: STORY TEXT -->
     <div>
       <div class="card">
-        <h4 class="mb-3 text-center">💖 Our Story</h4>
-
-        <p>
-          Every love story is beautiful, but ours is my favorite. 💕
-          From the moment we met, something felt different — something timeless.
-        </p>
-
-        <p>
-          What started as friendship slowly grew into something deeper,
-          something we both knew was meant to be.
-        </p>
-
-        <p>
-          Now, we are excited to begin our forever together, and we are grateful
-          to have you as part of our journey.
-        </p>
-      </div>
+  <h4 class="mb-3 text-center">💖 Our Story</h4>
+  <p>{{ about.story }}</p>
+</div>
     </div>
 
   </div>
