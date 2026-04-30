@@ -6,6 +6,8 @@ from django.conf import settings
 
 from notifications.utils import notify   # realtime helper
 
+from .models import RSVPContact  # Add this import
+
 def rsvp_view(request):
     if request.method == 'POST':
         form = RSVPForm(request.POST)
@@ -30,4 +32,6 @@ def rsvp_view(request):
     else:
         form = RSVPForm()
 
-    return render(request, 'rsvp/rsvp.html', {'form': form})
+    contacts = RSVPContact.objects.all()  # Add this line
+
+    return render(request, 'rsvp/rsvp.html', {'form': form, 'contacts': contacts})  # Add contacts to context

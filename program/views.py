@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Event, ProgramSettings
+from .models import Event, ProgramOutline
 
 def program(request):
     events = Event.objects.all()
-    settings = ProgramSettings.objects.first()
+    outline = ProgramOutline.objects.first()
 
     return render(request, 'program/program.html', {
         'events': events,
-        'settings': settings
+        'outline': outline,
     })

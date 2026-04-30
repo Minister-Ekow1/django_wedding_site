@@ -1,97 +1,303 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <title>Our Wedding</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/logo.png' %}">
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/logo.png' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Montserrat:wght@300;500&display=swap"
-    rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+
   <style>
+    :root {
+      --rose: #c8315a;
+      --rose-light: #f5d6df;
+      --rose-pale: #fdf4f7;
+      --gold: #b8913a;
+      --gold-light: #f5e9d3;
+      --ink: #1c1017;
+      --muted: #7a6570;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Montserrat;
-      background: #fffafc;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      background: var(--rose-pale);
       overflow-x: hidden;
+      color: var(--ink);
     }
 
-    h1,
-    h2,
-    h3 {
-      font-family: "Playfair Display";
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
     }
 
+    /* ── NAVBAR ── */
     .navbar {
-      backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(253, 244, 247, 0.88);
+      border-bottom: 1px solid rgba(200, 49, 90, 0.1);
+      padding: 0.65rem 0;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      box-shadow: 0 2px 24px rgba(28, 16, 23, 0.08);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-monogram {
+      width: 38px;
+      height: 38px;
+      background: var(--rose);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--ink);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-link {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted) !important;
+      padding: 0.4rem 0.85rem !important;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--rose) !important;
+      background: rgba(200, 49, 90, 0.06);
     }
 
     .nav-link.active-link {
-      font-weight: bold;
-      color: #d63384 !important;
+      color: var(--rose) !important;
+      background: rgba(200, 49, 90, 0.1);
+      font-weight: 500;
     }
 
+    .navbar-toggler {
+      border: 1px solid rgba(200, 49, 90, 0.2);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 1rem;
+      background: transparent;
+    }
+
+    /* ── MUSIC PLAYER ── */
+    .music-pill {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(253, 244, 247, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(200, 49, 90, 0.2);
+      border-radius: 28px;
+      padding: 8px 14px 8px 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(28, 16, 23, 0.1);
+    }
+
+    .music-pill:hover {
+      background: rgba(200, 49, 90, 0.08);
+      border-color: rgba(200, 49, 90, 0.35);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(28, 16, 23, 0.13);
+    }
+
+    .music-icon-circle {
+      width: 26px;
+      height: 26px;
+      background: var(--rose);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .music-icon-circle svg {
+      width: 11px;
+      height: 11px;
+      fill: white;
+    }
+
+    .music-waves {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 14px;
+    }
+
+    .music-waves span {
+      display: block;
+      width: 2px;
+      background: var(--rose);
+      border-radius: 2px;
+      animation: waveBar 0.9s ease-in-out infinite alternate;
+    }
+
+    .music-waves span:nth-child(1) { height: 4px; animation-delay: 0s; }
+    .music-waves span:nth-child(2) { height: 12px; animation-delay: 0.18s; }
+    .music-waves span:nth-child(3) { height: 7px; animation-delay: 0.35s; }
+    .music-waves span:nth-child(4) { height: 10px; animation-delay: 0.12s; }
+
+    @keyframes waveBar {
+      from { transform: scaleY(0.35); }
+      to   { transform: scaleY(1); }
+    }
+
+    .music-waves.paused span {
+      animation-play-state: paused;
+      transform: scaleY(0.35);
+    }
+
+    .music-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rose);
+      font-weight: 500;
+    }
+
+    /* ── HEARTS ── */
     .heart {
       position: fixed;
-      bottom: -20px;
-      color: #ff4d6d;
-      animation: float 6s linear infinite;
+      bottom: -30px;
+      pointer-events: none;
+      font-size: 14px;
+      animation: floatUp 6s linear forwards;
+      z-index: 0;
     }
 
-    @keyframes float {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      100% {
-        transform: translateY(-100vh);
-        opacity: 0;
-      }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: 0.8; }
+      50%  { transform: translateY(-50vh) rotate(15deg); opacity: 0.6; }
+      100% { transform: translateY(-105vh) rotate(-10deg); opacity: 0; }
     }
 
-    .intro {
+    /* ── INTRO ── */
+    .intro-screen {
       position: fixed;
       inset: 0;
-      background: black;
-      color: white;
+      background: #0d0d10;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      font-size: 40px;
+      justify-content: center;
       z-index: 9999;
-      opacity: 1;
-      transform: scale(1);
+      gap: 10px;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .intro-screen.fade-out {
+      opacity: 0;
+      transform: scale(1.06);
+      pointer-events: none;
+    }
+
+    .intro-ring {
+      font-size: 2.4rem;
+      animation: introPulse 2s ease-in-out infinite;
+      margin-bottom: 6px;
+    }
+
+    @keyframes introPulse {
+      0%, 100% { transform: scale(1) rotate(-5deg); }
+      50%  { transform: scale(1.15) rotate(5deg); }
+    }
+
+    .intro-line {
+      width: 52px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(184, 145, 58, 0.6), transparent);
+      margin: 4px 0;
+    }
+
+    .intro-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      color: #f0e6ea;
+      letter-spacing: 0.04em;
       text-align: center;
       padding: 0 1.5rem;
-      line-height: 1.1;
+      line-height: 1.15;
     }
 
-    @media (max-width: 600px) {
-      .intro {
-        font-size: 8vw;
-        padding: 0 0.5rem;
-      }
+    .intro-sub {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
     }
 
+    /* ── CARDS ── */
     .card {
       border: none;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 32px rgba(28, 16, 23, 0.07);
+      background: white;
     }
 
     .btn-primary {
-      background: #d63384;
+      background: var(--rose);
       border: none;
       border-radius: 30px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      padding: 0.55rem 1.6rem;
+      font-size: 0.85rem;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background: #a8264c;
+      transform: translateY(-1px);
     }
 
     .map-container {
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 40px rgba(28, 16, 23, 0.12);
       border-radius: 20px;
       overflow: hidden;
     }
@@ -100,81 +306,65 @@
 
 <body>
 
-  <!-- CINEMATIC INTRO -->
-  <div class="intro" id="intro">💍Our Wedding Story</div>
+  <!-- INTRO -->
+  <div class="intro-screen" id="intro">
+    <div class="intro-ring">💍</div>
+    <div class="intro-line"></div>
+    <div class="intro-title">Our Wedding Story</div>
+    <div class="intro-sub">A lifetime of love begins here</div>
+    <div class="intro-line"></div>
+  </div>
 
-  <!-- MUSIC -->
-  <audio id="music" loop>
-    <source src="/static/music/jama.mp3">
+  <!-- MUSIC (no autoplay spam — plays on first interaction) -->
+  <audio id="bgMusic" loop>
+    <source src="/static/music/jama.mp3" type="audio/mpeg">
   </audio>
 
-  <nav class="navbar navbar-expand-lg shadow-sm">
+  <!-- MUSIC PILL -->
+  <div class="music-pill" id="musicPill" title="Toggle music">
+    <div class="music-icon-circle" id="musicIcon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </svg>
+    </div>
+    <div class="music-waves" id="musicWaves">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <span class="music-label" id="musicLabel">Music</span>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg" id="mainNav">
     <div class="container">
 
-      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
-        <img src="{% static 'images/logo1.png' %}" alt="logo" height="40" width="50">
-        <span>O'27</span>
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <div class="brand-monogram">OJ'27</div>
+        <span class="brand-name">OJ&thinsp;'&thinsp;27</span>
       </a>
 
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle navigation">
         ☰
       </button>
 
       {% with request.path as path %}
-
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto">
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/' %}active-link{% endif %}" href="{% url 'home' %}">
-              Home
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/about/' %}active-link{% endif %}" href="{% url 'about' %}">
-              About
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/memories/' %}active-link{% endif %}" href="{% url 'gallery' %}">
-              Memories
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/rsvp/' %}active-link{% endif %}" href="{% url 'rsvp' %}">
-              RSVP
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/guestbook/' %}active-link{% endif %}" href="{% url 'guestbook' %}">
-              Guestbook
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/program/' %}active-link{% endif %}" href="{% url 'program' %}">
-              Program
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if path == '/contact/' %}active-link{% endif %}" href="{% url 'contact' %}">
-              Venue
-            </a>
-          </li>
-
-
+          <li class="nav-item"><a class="nav-link {% if path == '/' %}active-link{% endif %}" href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link {% if path == '/about/' %}active-link{% endif %}" href="{% url 'about' %}">About</a></li>
+          <li class="nav-item"><a class="nav-link {% if path == '/memories/' %}active-link{% endif %}" href="{% url 'gallery' %}">Memories</a></li>
+          <li class="nav-item"><a class="nav-link {% if path == '/rsvp/' %}active-link{% endif %}" href="{% url 'rsvp' %}">RSVP</a></li>
+          <li class="nav-item"><a class="nav-link {% if path == '/guestbook/' %}active-link{% endif %}" href="{% url 'guestbook' %}">Guestbook</a></li>
+          <li class="nav-item"><a class="nav-link {% if path == '/program/' %}active-link{% endif %}" href="{% url 'program' %}">Program</a></li>
+          <li class="nav-item"><a class="nav-link {% if path == '/contact/' %}active-link{% endif %}" href="{% url 'contact' %}">Venue</a></li>
         </ul>
       </div>
-
       {% endwith %}
 
     </div>
   </nav>
+
   {% block fullwidth %}{% endblock %}
 
   <div class="container p-0">
@@ -182,46 +372,73 @@
   </div>
 
   <script>
-    const music = document.getElementById("music");
-    music.volume = 0.5;
+    // ── INTRO ──
+    document.addEventListener("DOMContentLoaded", () => {
+      const intro = document.getElementById("intro");
+      setTimeout(() => {
+        intro.classList.add("fade-out");
+        setTimeout(() => intro.remove(), 1000);
+      }, 1800);
+    });
 
-    // autoplay attempt (browser may block until interaction)
-    window.addEventListener("click", () => {
+    // ── NAVBAR SHADOW ON SCROLL ──
+    const nav = document.getElementById("mainNav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 20);
+    }, { passive: true });
+
+    // ── MUSIC (play on first interaction, toggle on pill click) ──
+    const music = document.getElementById("bgMusic");
+    const pill   = document.getElementById("musicPill");
+    const waves  = document.getElementById("musicWaves");
+    const label  = document.getElementById("musicLabel");
+    music.volume = 0.4;
+
+    let musicStarted = false;
+
+    function startMusic() {
+      if (!musicStarted) {
+        music.play().catch(() => {});
+        musicStarted = true;
+      }
+    }
+
+    // Play on first user interaction anywhere on the page
+    document.addEventListener("click", startMusic, { once: true });
+    document.addEventListener("keydown", startMusic, { once: true });
+
+    // Pill toggles pause/resume
+    pill.addEventListener("click", (e) => {
+      e.stopPropagation(); // don't double-trigger the once listener
+      startMusic();
       if (music.paused) {
         music.play();
+        waves.classList.remove("paused");
+        label.textContent = "Music";
+      } else {
+        music.pause();
+        waves.classList.add("paused");
+        label.textContent = "Paused";
       }
     });
 
-    // FAST CINEMATIC INTRO (optimized)
-    document.addEventListener("DOMContentLoaded", () => {
+    // ── HEARTS (capped, memory-safe) ──
+    const HEART_GLYPHS = ["💖", "💕", "💗", "💓", "🌸"];
+    let activeHearts = 0;
+    const MAX_HEARTS = 7;
 
-      const intro = document.getElementById("intro");
-
-      setTimeout(() => {
-        intro.style.transition = "opacity 0.8s ease, transform 0.8s ease";
-        intro.style.opacity = "0";
-        intro.style.transform = "scale(1.1)";
-
-        setTimeout(() => intro.remove(), 800);
-      }, 1200);
-
-    });
-
-    // hearts
     setInterval(() => {
+      if (activeHearts >= MAX_HEARTS) return;
       const h = document.createElement("div");
       h.className = "heart";
-      h.innerHTML = "💖";
-      h.style.left = Math.random() * window.innerWidth + "px";
+      h.textContent = HEART_GLYPHS[Math.floor(Math.random() * HEART_GLYPHS.length)];
+      h.style.left = (5 + Math.random() * 90) + "vw";
+      h.style.fontSize = (11 + Math.random() * 7) + "px";
+      h.style.animationDuration = (5 + Math.random() * 3) + "s";
       document.body.appendChild(h);
-      setTimeout(() => h.remove(), 6000);
-    }, 800);
-
-    // click sound
-    document.addEventListener("click", () => {
-      new Audio("/static/music/jama.mp3").play();
-    });
+      activeHearts++;
+      setTimeout(() => { h.remove(); activeHearts--; }, 8000);
+    }, 1100);
   </script>
 </body>
-
 </html>

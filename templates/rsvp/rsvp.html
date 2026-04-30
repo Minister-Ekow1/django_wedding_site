@@ -1,58 +1,369 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="row justify-content-center mt-4">
-  <div class="col-md-6">
+<style>
+  /* ── PAGE ── */
+  .rsvp-section {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.85s ease 0.1s forwards;
+  }
 
-    <div class="card p-4">
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-      <h2 class="text-center mb-3">RSVP 💌</h2>
+  /* ── HEADER ── */
+  .rsvp-header {
+    text-align: center;
+    margin-bottom: 2.4rem;
+  }
 
-      {% if messages %}
-        {% for msg in messages %}
-          <div class="alert alert-success text-center">
-            {{ msg }}
-          </div>
-        {% endfor %}
-      {% endif %}
+  .rsvp-header .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
 
-      <form method="POST">
-        {% csrf_token %}
+  .rsvp-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0;
+  }
 
-        <div class="mb-3">
-          <label>Name</label>
-          {{ form.name }}
-        </div>
+  .rsvp-header h2 em {
+    font-style: italic;
+    color: var(--rose);
+  }
 
-        <div class="mb-3">
-          <label>Email</label>
-          {{ form.email }}
-        </div>
+  .header-rule {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose), transparent);
+    margin: 1rem auto 0.9rem;
+  }
 
-        <div class="mb-3">
-          <label>Will you attend?</label>
+  .rsvp-header p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ── CARD ── */
+  .rsvp-card {
+    background: white;
+    border-radius: 22px;
+    padding: 2.2rem 2rem 2rem;
+    box-shadow: 0 10px 40px rgba(28, 16, 23, 0.08);
+    border: 1px solid rgba(200, 49, 90, 0.07);
+  }
+
+  /* ── SUCCESS ALERT ── */
+  .alert-success {
+    background: rgba(184, 145, 58, 0.08);
+    border: 1px solid rgba(184, 145, 58, 0.25);
+    border-radius: 12px;
+    color: #7a5c1e;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 400;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .alert-success::before {
+    content: '✓';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: rgba(184, 145, 58, 0.2);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ── FIELD GROUP ── */
+  .field-group {
+    margin-bottom: 1.35rem;
+  }
+
+  .field-group label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 7px;
+  }
+
+  /* ── INPUTS ── */
+  .rsvp-form input[type="text"],
+  .rsvp-form input[type="email"],
+  .rsvp-form input[type="number"],
+  .rsvp-form textarea,
+  .rsvp-form select {
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink);
+    background: #fdf8fa;
+    border: 1px solid rgba(200, 49, 90, 0.15);
+    border-radius: 12px;
+    padding: 0.65rem 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .rsvp-form textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  .rsvp-form input:focus,
+  .rsvp-form textarea:focus,
+  .rsvp-form select:focus {
+    border-color: rgba(200, 49, 90, 0.45);
+    box-shadow: 0 0 0 3px rgba(200, 49, 90, 0.08);
+    background: white;
+  }
+
+  /* Select arrow */
+  .select-wrap {
+    position: relative;
+  }
+
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--muted);
+    pointer-events: none;
+  }
+
+  .select-wrap select {
+    padding-right: 2.2rem;
+    cursor: pointer;
+  }
+
+  /* Number input — hide spinners */
+  .rsvp-form input[type="number"]::-webkit-inner-spin-button,
+  .rsvp-form input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .rsvp-form input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+
+
+  /* ── DIVIDER ── */
+  .field-divider {
+    height: 1px;
+    background: rgba(200, 49, 90, 0.07);
+    margin: 1.6rem 0;
+  }
+
+  /* ── SUBMIT ── */
+  .btn-rsvp {
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--rose);
+    border: none;
+    border-radius: 30px;
+    padding: 0.85rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-rsvp:hover {
+    background: #a8264c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(200, 49, 90, 0.28);
+  }
+
+  .btn-rsvp:active {
+    transform: translateY(0);
+  }
+
+  .btn-rsvp svg {
+    width: 14px;
+    height: 14px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── FOOTER NOTE ── */
+  .rsvp-note {
+    text-align: center;
+    margin-top: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .rsvp-note-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--rose);
+    opacity: 0.35;
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .rsvp-section {
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    .rsvp-card {
+      padding: 1.6rem 1.3rem;
+    }
+  }
+</style>
+
+<div class="rsvp-section">
+
+  <!-- HEADER -->
+  <div class="rsvp-header">
+    <h2>RSVP <em>with love</em></h2>
+    <div class="header-rule"></div>
+    <p class="eyebrow">Let us know you'll be celebrating with us</p>
+  </div>
+
+  <div class="rsvp-card">
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert-success">{{ msg }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="POST" class="rsvp-form">
+      {% csrf_token %}
+
+      <!-- NAME -->
+      <div class="field-group">
+        <label for="id_name">Full Name</label>
+        {{ form.name }}
+      </div>
+
+      <!-- EMAIL -->
+      <div class="field-group">
+        <label for="id_email">Email Address</label>
+        {{ form.email }}
+      </div>
+
+      <div class="field-divider"></div>
+
+      <!-- ATTENDING -->
+      <div class="field-group">
+        <label for="id_attending">Will you attend?</label>
+        <div class="select-wrap">
           {{ form.attending }}
         </div>
+      </div>
 
-        <div class="mb-3">
-          <label>Number of Guests</label>
-          {{ form.guests }}
-        </div>
+      <!-- GUESTS -->
+      <div class="field-group">
+        <label for="id_guests">Number of Guests</label>
+        {{ form.guests }}
+      </div>
 
-        <div class="mb-3">
-          <label>Dietary Preferences</label>
-          {{ form.dietary_preferences }}
-        </div>
+      <div class="field-divider"></div>
 
-        <button class="btn btn-primary w-100">
-          Submit RSVP
-        </button>
+      <!-- DIETARY -->
+      <div class="field-group">
+        <label for="id_dietary_preferences">Dietary Preferences</label>
+        {{ form.dietary_preferences }}
+      </div>
 
-      </form>
+      <button type="submit" class="btn-rsvp">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 6L9 17l-5-5" />
+        </svg>
+        Confirm RSVP
+      </button>
 
-    </div>
+    </form>
 
   </div>
+
+  <!-- <div class="rsvp-note">
+    <div class="rsvp-note-dot"></div>
+    Kindly respond by the date on your invitation
+    <div class="rsvp-note-dot"></div>
+  </div> -->
+
+  <div class="rsvp-contact"
+    style="text-align:center; margin-top:2rem; font-family:'Jost',sans-serif; font-size:0.9rem; color:var(--muted);">
+    <strong>Contact Us:</strong><br>
+    For any questions or assistance, please reach out to:<br>
+    {% for contact in contacts %}
+    <span style="color:var(--rose);">{{ contact.name }}</span>
+    {% if contact.phone %}
+    — <a href="tel:{{ contact.phone }}" style="color:var(--rose); text-decoration:none;">{{ contact.phone }}</a>
+    {% endif %}
+    {% if contact.email %}
+    — <a href="mailto:{{ contact.email }}" style="color:var(--rose); text-decoration:none;">{{ contact.email }}</a>
+    {% endif %}
+    <br>
+    {% endfor %}
+  </div>
+
 </div>
 
 {% endblock %}

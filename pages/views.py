@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from datetime import datetime
-from .models import About, Venue, LoveStoryEvent
+from .models import About, Venue, LoveStoryEvent, AboutImage
 
-WEDDING_DATE = datetime(2026, 4, 25)
+WEDDING_DATE = datetime(2026, 5, 10)
 
 def home(request):
     return render(request, 'pages/home.html', {
@@ -12,10 +12,12 @@ def home(request):
 def about(request):
     about = About.objects.first()
     timeline = LoveStoryEvent.objects.all()
+    images = AboutImage.objects.all()  # Add this line
 
     return render(request, 'pages/about.html', {
         'about': about,
-        'timeline': timeline
+        'timeline': timeline,
+        'images': images,  # Add this to context
     })
 
 def contact(request):

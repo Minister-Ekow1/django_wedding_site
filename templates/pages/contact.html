@@ -1,25 +1,278 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container mt-5 text-center">
+<style>
+  /* ── PAGE ── */
+  .venue-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
 
-    <h2 class="mb-2">📍 {{ venue.name }}</h2>
-    <p class="text-muted">{{ venue.address }}</p>
+  /* ── HEADER ── */
+  .venue-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.85s ease 0.1s forwards;
+  }
 
-    <div class="map-container mt-4">
+  .venue-header .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
 
-        {% if venue %}
-        <iframe 
-            src="{{ venue.embed_url }}"
-            width="100%"
-            height="450"
-            style="border:0; border-radius:15px;">
-        </iframe>
-        {% else %}
-        <p>No venue added yet</p>
-        {% endif %}
+  .venue-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 0.1rem;
+  }
 
+  .venue-header h2 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .header-rule {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose), transparent);
+    margin: 1rem auto 0.9rem;
+  }
+
+  .venue-header .venue-address {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MAP CARD ── */
+  .map-card {
+    background: white;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(28, 16, 23, 0.08);
+    border: 1px solid rgba(200, 49, 90, 0.07);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.85s ease 0.35s forwards;
+  }
+
+  .map-card iframe {
+    width: 100%;
+    height: 480px;
+    border: 0;
+    display: block;
+  }
+
+  /* ── MAP FOOTER ── */
+  .map-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.5rem;
+    border-top: 1px solid rgba(200, 49, 90, 0.07);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .map-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .venue-pin {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(200, 49, 90, 0.08);
+    border: 1px solid rgba(200, 49, 90, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .venue-pin svg {
+    width: 15px;
+    height: 15px;
+    stroke: var(--rose);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .venue-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .venue-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .btn-directions {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--rose);
+    border: none;
+    border-radius: 30px;
+    padding: 0.6rem 1.3rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-directions:hover {
+    background: #a8264c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(200, 49, 90, 0.28);
+    color: white;
+    text-decoration: none;
+  }
+
+  .btn-directions:active {
+    transform: translateY(0);
+  }
+
+  .btn-directions svg {
+    width: 12px;
+    height: 12px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    border: 1px dashed rgba(200, 49, 90, 0.2);
+    border-radius: 22px;
+    background: rgba(200, 49, 90, 0.02);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.85s ease 0.35s forwards;
+  }
+
+  .empty-state p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .venue-section {
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    .map-card iframe {
+      height: 360px;
+    }
+
+    .map-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .btn-directions {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<div class="venue-section">
+
+  <!-- HEADER -->
+  <div class="venue-header">
+    <h2>Wedding <em>Venue</em></h2>
+    <div class="header-rule"></div>
+   <p class="eyebrow">Find Us Here</p>
+  </div>
+
+  <!-- MAP -->
+  {% if venue %}
+  <div class="map-card">
+    <iframe
+      src="{{ venue.embed_url }}"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+
+    <div class="map-footer">
+      <div class="map-footer-left">
+        <div class="venue-pin">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="venue-name">{{ venue.name }}</div>
+          <div class="venue-sub">{{ venue.address }}</div>
+        </div>
+      </div>
+
+      <a
+        href="https://www.google.com/maps/search/?api=1&query={{ venue.address|urlencode }}"
+        target="_blank"
+        rel="noopener"
+        class="btn-directions">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L19 21l-7-4-7 4 7-19z"/>
+        </svg>
+        Get Directions
+      </a>
     </div>
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <p>No venue added yet</p>
+  </div>
+  {% endif %}
 
 </div>
 

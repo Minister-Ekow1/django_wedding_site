@@ -10,9 +10,9 @@ class RSVPForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'attending': forms.Select(
-                choices=[(True, 'Yes'), (False, 'No')],
-                attrs={'class': 'form-control'}
-            ),
+               choices=[('yes', 'Yes'), ('no', 'No')],
+               attrs={'class': 'form-control'}
+        ),
             'guests': forms.NumberInput(attrs={'class': 'form-control'}),
             'dietary_preferences': forms.TextInput(attrs={'class': 'form-control'}),
         }

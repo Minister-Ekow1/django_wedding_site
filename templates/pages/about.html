@@ -2,159 +2,369 @@
 {% block content %}
 
 <style>
-.story-section {
-  animation: fadeUp 1s ease-in-out;
-  max-width: 1400px;
-  margin: auto;
-  padding: 20px;
-}
+  /* ── PAGE WRAPPER ── */
+  .story-section {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
 
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(30px); }
-  to { opacity:1; transform:translateY(0); }
-}
+  /* ── HEADER ── */
+  .story-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s ease 0.1s forwards;
+  }
 
-/* 💎 HEADER */
-.story-header h1 {
-  font-family: "Playfair Display";
-  font-size: 42px;
-  margin-bottom: 5px;
-}
-
-/* 🧱 3-COLUMN GRID (FIXED BALANCE) */
-.story-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1.2fr 1.4fr;
-  gap: 60px;
-  align-items: start;
-  margin-top: 20px;
-}
-
-/* 📸 IMAGE (LARGER + CLEANER) */
-.couple-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-/* 📍 TIMELINE */
-.timeline {
-  position: relative;
-  padding-left: 25px;
-}
-
-.timeline::before {
-  content: "";
-  position: absolute;
-  left: 8px;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background: #d63384;
-}
-
-.timeline-item {
-  position: relative;
-  margin-bottom: 28px;
-  padding-left: 20px;
-}
-
-.timeline-item::before {
-  content: "💖";
-  position: absolute;
-  left: -16px;
-  top: 0;
-}
-
-.timeline-item h5 {
-  font-size: 18px;
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.timeline-item p {
-  font-size: 15px;
-  margin: 0;
-  color: #555;
-}
-
-.couple-img {
-  transition: transform 0.4s ease;
-}
-
-.couple-img:hover {
-  transform: scale(1.03);
-}
-
-/* 💌 STORY CARD */
-.card {
-  border: none;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  line-height: 1.8;
-  font-size: 16px;
-  padding: 25px;
-}
-
-/* ✨ HOVER EFFECT */
-.card:hover {
-  transform: translateY(-5px);
-  transition: 0.3s ease;
-}
-
-/* 📱 MOBILE */
-@media (max-width: 992px) {
-  .story-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+  .story-header-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.9rem;
   }
 
   .story-header h1 {
-    font-size: 30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
   }
-}
+
+  .story-header h1 em {
+    color: var(--rose);
+    font-style: italic;
+  }
+
+  .story-header-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .header-rule {
+    width: 56px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose), transparent);
+    margin: 1.2rem auto 1.1rem;
+  }
+
+  /* ── GRID ── */
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1.2fr;
+    gap: 52px;
+    align-items: start;
+  }
+
+  /* ── COLUMN ANIMATIONS ── */
+  .col-left {
+    opacity: 0;
+    transform: translateX(-24px);
+    animation: fadeRight 0.9s ease 0.35s forwards;
+  }
+
+  .col-mid {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+
+  .col-right {
+    opacity: 0;
+    transform: translateX(24px);
+    animation: fadeLeft 0.9s ease 0.65s forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* ── SECTION LABELS ── */
+  .col-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .col-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200, 49, 90, 0.18);
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--rose), rgba(200, 49, 90, 0.15));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 10px;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -26px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--rose);
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .timeline-item:hover .timeline-dot {
+    background: var(--rose);
+    transform: scale(1.25);
+  }
+
+  .timeline-year {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .timeline-item h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .timeline-item p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  /* ── IMAGE ── */
+  .couple-img-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(28, 16, 23, 0.14);
+  }
+
+  .couple-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 1px rgba(200, 49, 90, 0.12);
+    pointer-events: none;
+  }
+
+  .couple-img {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .couple-img-wrap:hover .couple-img {
+    transform: scale(1.04);
+  }
+
+  /* Image caption */
+  .img-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.4rem 1.2rem 1rem;
+    background: linear-gradient(to top, rgba(13, 8, 10, 0.65), transparent);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(253, 244, 247, 0.88);
+    letter-spacing: 0.03em;
+    text-align: center;
+  }
+
+  /* ── STORY CARD ── */
+  .story-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    box-shadow: 0 8px 32px rgba(28, 16, 23, 0.07);
+    border: 1px solid rgba(200, 49, 90, 0.07);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .story-card:hover {
+    box-shadow: 0 16px 48px rgba(28, 16, 23, 0.11);
+    transform: translateY(-4px);
+  }
+
+  .story-card p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.93rem;
+    font-weight: 300;
+    color: #4a3c43;
+    line-height: 1.9;
+    margin: 0;
+  }
+
+  .story-card-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(200, 49, 90, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .story-card-sig {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--rose);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 992px) {
+    .story-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .col-left,
+    .col-mid,
+    .col-right {
+      animation-name: fadeUp;
+      transform: translateY(20px);
+    }
+
+    .col-mid {
+      order: -1;
+    }
+
+    .couple-img {
+      min-height: 300px;
+    }
+
+    .story-section {
+      padding: 3rem 1.2rem 4rem;
+    }
+  }
 </style>
 
-<div class="container mt-1 story-section">
-
+<div class="story-section">
   <!-- HEADER -->
-  <div class="text-center story-header">
-    <h1>Our Love Story 💖</h1>
-    <p class="text-muted">A journey written by fate</p>
+  <div class="story-header">
+    <h1>Our <em>Love</em> Story</h1>
+    <div class="header-rule"></div>
+    <p class="story-header-eyebrow">A journey written by fate</p>
   </div>
 
-  <!-- 🔥 3-COLUMN LAYOUT -->
+  <!-- 3-COLUMN LAYOUT -->
   <div class="story-grid">
 
     <!-- LEFT: TIMELINE -->
-    <div>
-      <h4 class="mb-4">💍 Our Journey</h4>
+    <div class="col-left">
+      <p class="col-label">Our journey</p>
 
       <div class="timeline">
-  {% for item in timeline %}
-  <div class="timeline-item">
-    <h5>{{ item.title }}</h5>
-    <p>{{ item.description }}</p>
-  </div>
-  {% endfor %}
-</div>
+        {% for item in timeline %}
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          {% if item.year %}
+          <div class="timeline-year">{{ item.year }}</div>
+          {% endif %}
+          <h5>{{ item.title }}</h5>
+          <p>{{ item.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
     </div>
 
     <!-- CENTER: IMAGE -->
-    <div>
-      {% if about.image %}
-  <img src="{{ about.image.url }}" class="couple-img">
-{% endif %}
+    <div class="col-mid">
+      {% for image in images %}
+      <div class="couple-img-wrap">
+        <img src="{{ image.image.url }}" class="couple-img" alt="Our photo together">
+        <div class="img-caption">Together since the beginning</div>
+      </div>
+      {% endfor %}
     </div>
 
     <!-- RIGHT: STORY TEXT -->
-    <div>
-      <div class="card">
-  <h4 class="mb-3 text-center">💖 Our Story</h4>
-  <p>{{ about.story }}</p>
-</div>
+    <div class="col-right">
+      <p class="col-label">Our story</p>
+
+      <div class="story-card">
+        <p>{{ about.story }}</p>
+
+        <div class="story-card-footer">
+          <span class="story-card-sig">With love always &nbsp;💍</span>
+        </div>
+      </div>
     </div>
 
   </div>

@@ -1,44 +1,399 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2 class="text-center mb-5 mt-3">
-  {{ settings.title }}
-</h2>
+<style>
+  /* ── PAGE ── */
+  .program-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
 
-<div class="container">
+  /* ── HEADER ── */
+  .program-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.85s ease 0.1s forwards;
+  }
 
-  <div class="row align-items-start">
+  .program-header .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
 
-    <!-- LEFT: PROGRAM POSTER -->
-    <div class="col-md-5 text-center mb-4">
+  .program-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0;
+  }
 
-      {% if settings.poster %}
-      <img src="{{ settings.poster.url }}"
-           class="img-fluid rounded shadow poster-img">
-      {% endif %}
+  .program-header h2 em {
+    font-style: italic;
+    color: var(--rose);
+  }
 
+  .header-rule {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose), transparent);
+    margin: 1rem auto 0.9rem;
+  }
+
+  .program-header p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── GRID ── */
+  .program-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  /* ── POSTER COLUMN ── */
+  .poster-column {
+    position: sticky;
+    top: 90px;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: fadeRight 0.85s ease 0.25s forwards;
+  }
+
+  @keyframes fadeRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .poster-wrap {
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(28, 16, 23, 0.13);
+    border: 1px solid rgba(200, 49, 90, 0.08);
+    background: white;
+  }
+
+  .poster-img {
+    width: 100%;
+    height: auto;
+    max-height: 560px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .poster-wrap:hover .poster-img {
+    transform: scale(1.04);
+  }
+
+  .poster-caption {
+    padding: 1rem 1.25rem;
+    background: white;
+    border-top: 1px solid rgba(200, 49, 90, 0.07);
+  }
+
+  .poster-caption-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+
+  .poster-caption-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* ── TIMELINE COLUMN ── */
+  .timeline-column {
+    opacity: 0;
+    transform: translateX(20px);
+    animation: fadeLeft 0.85s ease 0.4s forwards;
+  }
+
+  @keyframes fadeLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .timeline-column-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .timeline-column-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .timeline-count {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: rgba(200, 49, 90, 0.07);
+    border: 1px solid rgba(200, 49, 90, 0.12);
+    border-radius: 20px;
+    padding: 2px 10px;
+  }
+
+  /* ── TIMELINE TRACK ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(200, 49, 90, 0.22) 10%, rgba(200, 49, 90, 0.22) 90%, transparent);
+  }
+
+  /* ── EVENT CARD ── */
+  .timeline-item {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.1rem;
+    box-shadow: 0 4px 20px rgba(28, 16, 23, 0.06);
+    border: 1px solid rgba(200, 49, 90, 0.06);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fadeUp 0.65s ease forwards;
+  }
+
+  .timeline-item:hover {
+    box-shadow: 0 8px 32px rgba(28, 16, 23, 0.1);
+    transform: translateY(-3px);
+  }
+
+  /* dot on the track */
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.85rem;
+    top: 1.45rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rose);
+    box-shadow: 0 0 0 3px rgba(200, 49, 90, 0.15);
+  }
+
+  /* stagger */
+  .timeline-item:nth-child(1) {
+    animation-delay: 0.50s;
+  }
+
+  .timeline-item:nth-child(2) {
+    animation-delay: 0.58s;
+  }
+
+  .timeline-item:nth-child(3) {
+    animation-delay: 0.66s;
+  }
+
+  .timeline-item:nth-child(4) {
+    animation-delay: 0.74s;
+  }
+
+  .timeline-item:nth-child(5) {
+    animation-delay: 0.82s;
+  }
+
+  .timeline-item:nth-child(6) {
+    animation-delay: 0.90s;
+  }
+
+  .timeline-item:nth-child(7) {
+    animation-delay: 0.98s;
+  }
+
+  .timeline-item:nth-child(8) {
+    animation-delay: 1.06s;
+  }
+
+  .event-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.65rem;
+  }
+
+  .time-badge {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--rose);
+    background: rgba(200, 49, 90, 0.07);
+    border: 1px solid rgba(200, 49, 90, 0.15);
+    border-radius: 20px;
+    padding: 3px 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .event-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .event-description {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 300;
+    color: #4a3c43;
+    line-height: 1.8;
+    margin: 0;
+    padding-left: 0;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 3.5rem 1.5rem;
+    border: 1px dashed rgba(200, 49, 90, 0.2);
+    border-radius: 16px;
+    background: rgba(200, 49, 90, 0.02);
+  }
+
+  .empty-state p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .program-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .poster-column {
+      position: static;
+      animation-name: fadeUp;
+      transform: translateY(20px);
+    }
+
+    .timeline-column {
+      animation-name: fadeUp;
+      transform: translateY(20px);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .program-section {
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    .timeline {
+      padding-left: 1.5rem;
+    }
+  }
+</style>
+
+<div class="program-section">
+
+  <!-- HEADER -->
+  <div class="program-header">
+
+    <h2><em>Programme</em></h2>
+    <div class="header-rule"></div>
+    <p class="eyebrow">The Order of Events</p>
+  </div>
+
+  <div class="program-grid">
+
+    <!-- LEFT: POSTER -->
+    {% if outline.poster %}
+    <div class="poster-column">
+      <div class="poster-wrap">
+        <img src="{{ outline.poster.url }}" alt="Wedding programme poster" class="poster-img">
+        <div class="poster-caption">
+          <p class="poster-caption-label">{{ outline.title }}</p>
+          <p class="poster-caption-title"></p>
+        </div>
+      </div>
     </div>
+    {% endif %}
 
     <!-- RIGHT: TIMELINE -->
-    <div class="col-md-7">
+    <div class="timeline-column" {% if not outline.poster%}style="grid-column: 1 / -1; max-width: 680px; margin: 0 auto;" {% endif %}>
+
+      <div class="timeline-column-header">
+        <span class="timeline-column-title">Schedule</span>
+        {% if events %}
+        <span class="timeline-count">{{ events|length }} event(s)</span>
+        {% endif %}
+      </div>
 
       <div class="timeline">
-
         {% for event in events %}
-        <div class="timeline-item card p-3 mb-4">
-
-          <div class="d-flex align-items-center mb-2">
+        <div class="timeline-item">
+          <div class="event-top">
             <span class="time-badge">{{ event.time }}</span>
-            <h5 class="ms-3 mb-0">{{ event.title }}</h5>
+            <h5 class="event-title">{{ event.title }}</h5>
           </div>
-
-          <p class="text-muted mb-0">{{ event.description }}</p>
-
+          {% if event.description %}
+          <p class="event-description">{{ event.description }}</p>
+          {% endif %}
         </div>
         {% empty %}
-          <p>No program added yet 💍</p>
+        <div class="empty-state">
+          <p>No programme added yet</p>
+        </div>
         {% endfor %}
-
       </div>
 
     </div>
@@ -46,53 +401,5 @@
   </div>
 
 </div>
-
-<style>
-
-/* POSTER */
-.poster-img {
-  max-height: 600px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.poster-img:hover {
-  transform: scale(1.03);
-}
-
-/* TIMELINE */
-.timeline {
-  padding-left: 10px;
-}
-
-/* EVENT CARD */
-.timeline-item {
-  border-left: 4px solid #d63384;
-  border-radius: 15px;
-  transition: all 0.3s ease;
-}
-
-.timeline-item:hover {
-  transform: translateY(-5px);
-}
-
-/* TIME BADGE */
-.time-badge {
-  background: #d63384;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-/* MOBILE FIX */
-@media (max-width: 768px) {
-  .poster-img {
-    max-height: 400px;
-  }
-}
-
-</style>
 
 {% endblock %}

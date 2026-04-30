@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, ProgramSettings
+from .models import Event, ProgramOutline
 
 admin.site.register(Event)
-admin.site.register(ProgramSettings)
+admin.site.register(ProgramOutline)

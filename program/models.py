@@ -9,9 +9,9 @@ class Event(models.Model):
         return f"{self.time} - {self.title}"
 
 
-class ProgramSettings(models.Model):
+class ProgramOutline(models.Model):
     title = models.CharField(max_length=200, default="Wedding Program Outline")
     poster = models.ImageField(upload_to='program/', blank=True, null=True)
 
     def __str__(self):
-        return "Program Settings"
+        return "Program Outline"

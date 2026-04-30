@@ -1,31 +1,357 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="row justify-content-center">
-  <div class="col-md-6">
+<style>
+  /* ── PAGE ── */
+  .submit-section {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.85s ease 0.1s forwards;
+  }
 
-    <div class="card p-4">
-      <h3 class="text-center">Share Your Memory 💕</h3>
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-      {% if messages %}
-        {% for msg in messages %}
-          <div class="alert alert-success">{{ msg }}</div>
-        {% endfor %}
-      {% endif %}
+  /* ── HEADER ── */
+  .submit-header {
+    text-align: center;
+    margin-bottom: 2.4rem;
+  }
 
-      <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+  .submit-header .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
 
-        <button class="btn btn-primary w-100">Submit</button>
-      </form>
+  .submit-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0;
+    letter-spacing: -0.01em;
+  }
 
-      <small class="text-muted">
-        Your memory will appear after approval 💍
-      </small>
-    </div>
+  .submit-header h3 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .header-rule {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose), transparent);
+    margin: 1rem auto 0.9rem;
+  }
+
+  .submit-header p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+
+  /* ── CARD ── */
+  .submit-card {
+    background: white;
+    border-radius: 22px;
+    padding: 2.2rem 2rem;
+    box-shadow: 0 10px 40px rgba(28, 16, 23, 0.08);
+    border: 1px solid rgba(200, 49, 90, 0.07);
+  }
+
+  /* ── SUCCESS ALERT ── */
+  .alert-success {
+    background: rgba(184, 145, 58, 0.08);
+    border: 1px solid rgba(184, 145, 58, 0.25);
+    border-radius: 12px;
+    color: #7a5c1e;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 400;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .alert-success::before {
+    content: '✓';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: rgba(184, 145, 58, 0.2);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ── FORM FIELDS ── */
+
+  /* Override Django's as_p output */
+  .submit-form p {
+    margin-bottom: 1.35rem;
+  }
+
+  .submit-form label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.73rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 7px;
+  }
+
+  .submit-form input[type="text"],
+  .submit-form input[type="email"],
+  .submit-form textarea,
+  .submit-form select {
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink);
+    background: #fdf8fa;
+    border: 1px solid rgba(200, 49, 90, 0.15);
+    border-radius: 12px;
+    padding: 0.65rem 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .submit-form textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  .submit-form input[type="text"]:focus,
+  .submit-form input[type="email"]:focus,
+  .submit-form textarea:focus,
+  .submit-form select:focus {
+    border-color: rgba(200, 49, 90, 0.45);
+    box-shadow: 0 0 0 3px rgba(200, 49, 90, 0.08);
+    background: white;
+  }
+
+  /* File inputs */
+  .submit-form input[type="file"] {
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.83rem;
+    font-weight: 300;
+    color: var(--muted);
+    background: #fdf8fa;
+    border: 1px dashed rgba(200, 49, 90, 0.25);
+    border-radius: 12px;
+    padding: 0.7rem 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .submit-form input[type="file"]:hover {
+    border-color: rgba(200, 49, 90, 0.45);
+    background: white;
+  }
+
+  .submit-form input[type="file"]::-webkit-file-upload-button {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+    color: var(--rose);
+    background: rgba(200, 49, 90, 0.07);
+    border: 1px solid rgba(200, 49, 90, 0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background 0.2s;
+  }
+
+  .submit-form input[type="file"]::-webkit-file-upload-button:hover {
+    background: rgba(200, 49, 90, 0.14);
+  }
+
+  /* Field help text */
+  .submit-form .helptext,
+  .submit-form span.helptext {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin-top: 5px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Field errors */
+  .submit-form ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+  }
+
+  .submit-form ul.errorlist li {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    color: #a32d2d;
+    background: rgba(163, 45, 45, 0.06);
+    border: 1px solid rgba(163, 45, 45, 0.18);
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin-top: 4px;
+  }
+
+  /* Checkboxes */
+  .submit-form input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--rose);
+    margin-right: 7px;
+    cursor: pointer;
+  }
+
+  /* ── SUBMIT BUTTON ── */
+  .btn-submit {
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--rose);
+    border: none;
+    border-radius: 30px;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-submit:hover {
+    background: #a8264c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(200, 49, 90, 0.28);
+  }
+
+  .btn-submit:active {
+    transform: translateY(0);
+  }
+
+  .btn-submit svg {
+    width: 14px;
+    height: 14px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── FOOTER NOTE ── */
+  .submit-note {
+    text-align: center;
+    margin-top: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.77rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .submit-note-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--rose);
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .submit-section {
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    .submit-card {
+      padding: 1.6rem 1.3rem;
+    }
+  }
+</style>
+
+<div class="submit-section">
+
+  <!-- HEADER -->
+  <div class="submit-header">
+    <h3>Share a <em>Memory</em></h3>
+    <div class="header-rule"></div>
+    <p class="eyebrow">Add a photo, video, or story to our collection</p>
+  </div>
+
+  <div class="submit-card">
+
+    <!-- SUCCESS MESSAGE -->
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert-success">{{ msg }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- FORM -->
+    <form method="POST" enctype="multipart/form-data" class="submit-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="btn-submit">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12l7-7 7 7" />
+        </svg>
+        Submit Memory
+      </button>
+    </form>
 
   </div>
+
+  <!-- APPROVAL NOTE -->
+  <div class="submit-note">
+    <div class="submit-note-dot"></div>
+    Your memory will appear after approval
+    <div class="submit-note-dot"></div>
+  </div>
+
 </div>
 
 {% endblock %}
