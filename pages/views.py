@@ -2,7 +2,7 @@ from django.shortcuts import render
 from datetime import datetime
 from .models import About, Venue, LoveStoryEvent, AboutImage
 
-WEDDING_DATE = datetime(2026, 5, 10)
+WEDDING_DATE = datetime(2027, 5, 10)
 
 def home(request):
     return render(request, 'pages/home.html', {

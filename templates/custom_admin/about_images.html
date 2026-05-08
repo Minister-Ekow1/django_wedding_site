@@ -1,0 +1,222 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.page-header{
+    margin-bottom:35px;
+}
+
+.page-header h1{
+    font-size:40px;
+    font-weight:700;
+}
+
+.page-header p{
+    color:#777;
+}
+
+/* ADD BUTTON */
+
+.add-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    background:#d63384;
+    color:white !important;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+    margin-bottom:30px;
+
+    box-shadow:0 8px 20px rgba(214,51,132,0.18);
+}
+
+.add-btn:hover{
+    background:#bb2d73;
+    transform:translateY(-2px);
+}
+
+/* GRID */
+
+.image-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+/* CARD */
+
+.image-card{
+    background:white;
+    border-radius:22px;
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+
+    transition:0.3s;
+}
+
+.image-card:hover{
+    transform:translateY(-5px);
+}
+
+.image-card img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+}
+
+/* FOOTER */
+
+.image-footer{
+    padding:18px;
+}
+
+/* BUTTON ROW */
+
+.action-row{
+    display:flex;
+    gap:12px;
+}
+
+/* EDIT BUTTON */
+
+.edit-btn{
+    flex:1;
+
+    text-align:center;
+
+    background:#f3f4f6;
+    color:#333 !important;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+.edit-btn:hover{
+    background:#d63384;
+    color:white !important;
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+    flex:1;
+
+    text-align:center;
+
+    background:#fff0f3;
+    color:#d63384 !important;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+.delete-btn:hover{
+    background:#d63384;
+    color:white !important;
+}
+
+/* EMPTY */
+
+.empty-box{
+    background:white;
+    border-radius:20px;
+    padding:60px;
+    text-align:center;
+    color:#888;
+}
+
+</style>
+
+<div class="page-header">
+
+    <h1>About Images 📸</h1>
+
+    <p>
+        Images displayed in the About section.
+    </p>
+
+</div>
+
+<a href="{% url 'custom_admin:about_image_add' %}"
+   class="add-btn">
+
+    ➕ Add Image
+
+</a>
+
+{% if images %}
+
+<div class="image-grid">
+
+    {% for image in images %}
+
+    <div class="image-card">
+
+        <img src="{{ image.image.url }}"
+             alt="About Image">
+
+        <div class="image-footer">
+
+            <div class="action-row">
+
+                <a href="{% url 'custom_admin:about_image_edit' image.id %}"
+                   class="edit-btn">
+
+                    Edit
+
+                </a>
+
+                <a href="{% url 'custom_admin:about_image_delete' image.id %}"
+                   class="delete-btn">
+
+                    Delete
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-box">
+
+    <h4>No images uploaded yet</h4>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

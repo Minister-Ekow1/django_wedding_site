@@ -1,0 +1,594 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wedding CMS</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary: #d63384;
+            --primary-dark: #bb2d73;
+            --bg: #f7f3f5;
+            --card: #ffffff;
+            --text: #222;
+            --muted: #777;
+            --border: #ececec;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 270px;
+            height: 100vh;
+
+            background: linear-gradient(180deg,
+                    #d63384,
+                    #a61e61);
+
+            padding: 30px 18px;
+            overflow-y: auto;
+
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+
+            z-index: 1000;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+
+        .brand-box {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .brand-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .brand-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .brand-sub {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* SIDEBAR LINKS */
+
+        .sidebar-section-title {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 28px 12px 12px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: white;
+            text-decoration: none;
+
+            padding: 14px 16px;
+            border-radius: 14px;
+
+            margin-bottom: 10px;
+
+            transition: 0.3s;
+
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(4px);
+        }
+
+        .sidebar a.active-link {
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* MAIN */
+
+        .main-content {
+            margin-left: 270px;
+            padding: 35px;
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            background: white;
+            border-radius: 20px;
+            padding: 18px 24px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 30px;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        .topbar-title h4 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .topbar-title p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .topbar-btn {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .topbar-btn:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .admin-user {
+            background: #faf3f7;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        /* GLOBAL CARD */
+
+        .card-box {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(10px);
+
+            border-radius: 24px;
+            padding: 30px;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* BUTTONS */
+
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* TABLE */
+
+        .table {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        .table th,
+        .table td {
+            padding: 16px;
+            vertical-align: middle;
+        }
+
+        /* FORMS */
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 14px;
+
+            border-radius: 14px;
+            border: 1px solid var(--border);
+
+            margin-bottom: 18px;
+
+            transition: 0.3s;
+        }
+
+        form input:focus,
+        form textarea:focus,
+        form select:focus {
+            outline: none;
+            border-color: var(--primary);
+
+            box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.08);
+        }
+
+        /* ALERTS */
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+
+            padding: 16px 18px;
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+
+            padding: 16px 18px;
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+        }
+
+        /* PAGINATION */
+
+        .pagination {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pagination a,
+        .pagination span {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #444;
+        }
+
+        .pagination .active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* FOOTER */
+
+        .admin-footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        .mobile-toggle {
+            display: none;
+        }
+
+        @media(max-width:992px) {
+
+            .sidebar {
+                left: -100%;
+                transition: 0.3s;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .mobile-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+
+                background: var(--primary);
+                color: white;
+
+                border: none;
+                border-radius: 10px;
+
+                padding: 12px 15px;
+
+                z-index: 2000;
+            }
+
+            .topbar {
+                margin-top: 55px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- MOBILE TOGGLE -->
+
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+
+        ☰
+
+    </button>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar" id="sidebar">
+
+        <!-- BRAND -->
+
+        <div class="brand-box">
+
+            <img src="{% static 'images/logo.png' %}" class="brand-logo">
+
+            <div class="brand-title">
+                ADMIN
+            </div>
+
+            <div class="brand-sub">
+                Premium Wedding Dashboard
+            </div>
+
+        </div>
+
+        <!-- MAIN -->
+
+        <div class="sidebar-section-title">
+            Main
+        </div>
+
+        <a class="{% if request.path == '/cms/' %}active-link{% endif %}"
+            href="{% url 'custom_admin:admin_dashboard' %}">
+
+            📊 Dashboard
+
+        </a>
+
+        <a class="{% if '/settings/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:site_settings_manage' %}">
+
+            ⚙️ Site Settings
+
+        </a>
+
+        <!-- CONTENT -->
+
+        <div class="sidebar-section-title">
+            Website Content
+        </div>
+
+        <a class="{% if '/about/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:about_manage' %}">
+
+            💖 About
+
+        </a>
+
+        <a class="{% if '/venue/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:venue_manage' %}">
+
+            📍 Venue
+
+        </a>
+
+        <a class="{% if '/love-story/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:love_story_manage' %}">
+
+            💌 Love Story
+
+        </a>
+
+        <a class="{% if '/program/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:program_manage' %}">
+
+            📅 Program
+
+        </a>
+
+        <!-- ENGAGEMENT -->
+
+        <div class="sidebar-section-title">
+            Engagement
+        </div>
+
+        <a class="{% if '/rsvp/' in request.path %}active-link{% endif %}" href="{% url 'custom_admin:rsvp_manage' %}">
+
+            📩 RSVP
+
+        </a>
+
+        <a class="{% if '/guestbook/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:guestbook_manage' %}">
+
+            💬 Guestbook
+
+        </a>
+
+        <a class="{% if '/memories/' in request.path %}active-link{% endif %}"
+            href="{% url 'custom_admin:memories_manage' %}">
+
+            📸 Memories
+
+        </a>
+
+        <!-- WEBSITE -->
+
+        <div class="sidebar-section-title">
+            Website
+        </div>
+
+        <a href="/">
+
+            🌐 View Website
+
+        </a>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="topbar-title">
+
+                <h4>
+                    Wedding Management Dashboard
+                </h4>
+
+            </div>
+
+            <div class="topbar-actions">
+
+                <a href="/" class="topbar-btn">
+
+                    View Website
+
+                </a>
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="admin-user">
+
+                        👤 {{ request.user.username }}
+
+                    </div>
+
+                    <a href="{% url 'logout' %}" class="topbar-btn">
+
+                        Logout
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- DJANGO MESSAGES -->
+
+        {% if messages %}
+
+        {% for message in messages %}
+
+        <div class="alert-{{ message.tags }}">
+
+            {{ message }}
+
+        </div>
+
+        {% endfor %}
+
+        {% endif %}
+
+        <!-- PAGE CONTENT -->
+
+        {% block content %}
+        {% endblock %}
+
+        <!-- FOOTER -->
+
+        <div class="admin-footer">
+
+            © 2026 Wedding CMS • Designed with 💖
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function toggleSidebar() {
+
+            document
+                .getElementById("sidebar")
+                .classList
+                .toggle("active");
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.detail-wrapper{
+    max-width:800px;
+    margin:auto;
+}
+
+.detail-card{
+    background:white;
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.detail-title{
+    font-size:40px;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    padding:18px 0;
+    border-bottom:1px solid #eee;
+}
+
+.info-label{
+    font-weight:600;
+    color:#555;
+}
+
+.info-value{
+    color:#222;
+}
+
+.badge-yes{
+    background:#28a745;
+    color:white;
+    padding:8px 14px;
+    border-radius:30px;
+}
+
+.badge-no{
+    background:#dc3545;
+    color:white;
+    padding:8px 14px;
+    border-radius:30px;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:30px;
+    background:#d63384;
+    color:white;
+    text-decoration:none;
+    padding:14px 20px;
+    border-radius:12px;
+}
+
+</style>
+
+<div class="detail-wrapper">
+
+    <div class="detail-card">
+
+        <div class="detail-title">
+
+            RSVP Details 📩
+
+        </div>
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Name
+            </div>
+
+            <div class="info-value">
+                {{ rsvp.name }}
+            </div>
+
+        </div>
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Email
+            </div>
+
+            <div class="info-value">
+                {{ rsvp.email }}
+            </div>
+
+        </div>
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Attending
+            </div>
+
+            <div class="info-value">
+
+                {% if rsvp.attending %}
+
+                <span class="badge-yes">
+                    Yes
+                </span>
+
+                {% else %}
+
+                <span class="badge-no">
+                    No
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Guests
+            </div>
+
+            <div class="info-value">
+                {{ rsvp.guests }}
+            </div>
+
+        </div>
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Dietary Preferences
+            </div>
+
+            <div class="info-value">
+                {{ rsvp.dietary_preferences }}
+            </div>
+
+        </div>
+
+        <a href="{% url 'custom_admin:rsvp_manage' %}"
+           class="back-btn">
+
+            ← Back
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

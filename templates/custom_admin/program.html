@@ -1,0 +1,234 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.program-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:35px;
+}
+
+.program-header h1{
+    font-size:42px;
+    font-weight:700;
+}
+
+.program-header p{
+    color:#777;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+@media(max-width:992px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+}
+
+.program-card{
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.program-card input,
+.program-card textarea{
+    width:100%;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:20px;
+}
+
+.program-card input:focus,
+.program-card textarea:focus{
+    outline:none;
+    border-color:#d63384;
+}
+
+.poster-preview img{
+    width:100%;
+    border-radius:18px;
+    margin-top:20px;
+}
+
+.save-btn{
+    background:#d63384;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:14px;
+}
+
+.event-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.event-card{
+    background:#faf4f7;
+    padding:22px;
+    border-radius:18px;
+}
+
+.event-time{
+    color:#d63384;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.event-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
+
+.edit-btn{
+    background:#d63384;
+    color:white;
+    text-decoration:none;
+    padding:9px 14px;
+    border-radius:10px;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    text-decoration:none;
+    padding:9px 14px;
+    border-radius:10px;
+}
+
+.add-btn{
+    background:#d63384;
+    color:white;
+    text-decoration:none;
+    padding:14px 22px;
+    border-radius:14px;
+}
+
+</style>
+
+<div class="program-header">
+
+    <div>
+
+        <p>
+            Manage your wedding schedule and poster.
+        </p>
+
+    </div>
+
+    <a href="{% url 'custom_admin:program_add' %}"
+       class="add-btn">
+
+       ➕ Add Event
+
+    </a>
+
+</div>
+
+<div class="layout">
+
+    <!-- SETTINGS -->
+
+    <div class="program-card">
+
+        <h3 class="mb-4">
+            Program Settings
+        </h3>
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="save-btn">
+                Save Program
+            </button>
+
+        </form>
+
+        {% if form.instance.poster %}
+
+        <div class="poster-preview">
+
+            <img src="{{ form.instance.poster.url }}">
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- EVENTS -->
+
+    <div class="program-card">
+
+        <h3 class="mb-4">
+            Program Events
+        </h3>
+
+        <div class="event-list">
+
+            {% for event in events %}
+
+            <div class="event-card">
+
+                <div class="event-time">
+                    {{ event.time }}
+                </div>
+
+                <h4>
+                    {{ event.title }}
+                </h4>
+
+                <p>
+                    {{ event.description }}
+                </p>
+
+                <div class="event-actions">
+
+                    <a href="{% url 'custom_admin:program_edit' event.id %}"
+                       class="edit-btn">
+
+                        Edit
+
+                    </a>
+
+                    <a href="{% url 'custom_admin:program_delete' event.id %}"
+                       class="delete-btn">
+
+                        Delete
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <p>No events added yet.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

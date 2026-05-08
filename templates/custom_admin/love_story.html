@@ -1,0 +1,178 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.page-header h1{
+    font-size:42px;
+    font-weight:700;
+}
+
+.page-header p{
+    color:#777;
+}
+
+.add-btn{
+    background:#d63384;
+    color:white;
+    text-decoration:none;
+    padding:14px 22px;
+    border-radius:14px;
+    font-weight:600;
+}
+
+.story-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.story-card{
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    transition:0.3s;
+}
+
+.story-card:hover{
+    transform:translateY(-5px);
+}
+
+.story-order{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#faf3f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:#d63384;
+    margin-bottom:20px;
+}
+
+.story-card h3{
+    margin-bottom:12px;
+}
+
+.story-card p{
+    color:#666;
+    line-height:1.7;
+}
+
+.action-row{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+}
+
+.edit-btn{
+    background:#d63384;
+    color:white;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:10px;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:10px;
+}
+
+.empty-box{
+    background:white;
+    border-radius:24px;
+    padding:70px;
+    text-align:center;
+    color:#888;
+}
+
+</style>
+
+<div class="page-header">
+
+    <div>
+
+        <p>
+            Manage your relationship timeline beautifully.
+        </p>
+
+    </div>
+
+    <a href="{% url 'custom_admin:love_story_add' %}"
+       class="add-btn">
+
+        ➕ Add Event
+
+    </a>
+
+</div>
+
+{% if events %}
+
+<div class="story-grid">
+
+    {% for event in events %}
+
+    <div class="story-card">
+
+        <div class="story-order">
+            {{ event.order }}
+        </div>
+
+        <h3>
+            {{ event.title }}
+        </h3>
+
+        <p>
+            {{ event.description }}
+        </p>
+
+        <div class="action-row">
+
+            <a href="{% url 'custom_admin:love_story_edit' event.id %}"
+               class="edit-btn">
+
+                Edit
+
+            </a>
+
+            <a href="{% url 'custom_admin:love_story_delete' event.id %}"
+               class="delete-btn">
+
+                Delete
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-box">
+
+    <h3>No Love Story Events Yet 💔</h3>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

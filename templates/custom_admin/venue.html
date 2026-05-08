@@ -1,0 +1,90 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.form-shell{
+    max-width:900px;
+    margin:auto;
+}
+
+.header{
+    margin-bottom:35px;
+}
+
+.header h1{
+    font-size:42px;
+    font-weight:700;
+}
+
+.header p{
+    color:#777;
+}
+
+.card-box{
+    background:white;
+    padding:40px;
+    border-radius:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.card-box input,
+.card-box textarea{
+    width:100%;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:22px;
+}
+
+.card-box input:focus,
+.card-box textarea:focus{
+    outline:none;
+    border-color:#d63384;
+}
+
+.save-btn{
+    background:#d63384;
+    color:white;
+    border:none;
+    padding:14px 28px;
+    border-radius:14px;
+}
+
+.map-preview{
+    margin-top:35px;
+    border-radius:22px;
+    overflow:hidden;
+}
+
+</style>
+
+<div class="form-shell">
+
+    <div class="header">
+
+        <p>
+            Update wedding venue information.
+        </p>
+
+    </div>
+
+    <div class="card-box">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="save-btn">
+                Save Venue
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

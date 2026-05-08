@@ -1,0 +1,64 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+
+<style>
+
+/* PASTE ALL YOUR FORM STYLES HERE */
+
+</style>
+
+<div class="admin-form-section">
+
+  <div class="admin-form-header">
+
+    <p class="eyebrow">
+      {{ eyebrow }}
+    </p>
+
+    <h2>
+      {{ title }}
+    </h2>
+
+    <p>
+      {{ subtitle }}
+    </p>
+
+  </div>
+
+  <div class="admin-form-card">
+
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="alert-success">
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          class="admin-form">
+
+      {% csrf_token %}
+
+      {{ form.as_p }}
+
+      <div class="admin-form-actions">
+
+        <button type="submit"
+                class="btn-save">
+
+          Save Changes
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}

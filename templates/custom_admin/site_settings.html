@@ -1,0 +1,96 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.settings-wrapper{
+    max-width:1000px;
+    margin:auto;
+}
+
+.settings-header{
+    margin-bottom:35px;
+}
+
+.settings-header h1{
+    font-size:42px;
+    font-weight:700;
+}
+
+.settings-header p{
+    color:#777;
+}
+
+.settings-card{
+    background:white;
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.settings-card input,
+.settings-card textarea,
+.settings-card select{
+    width:100%;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:22px;
+}
+
+.settings-card input:focus,
+.settings-card textarea:focus{
+    outline:none;
+    border-color:#d63384;
+}
+
+.save-settings{
+    background:#d63384;
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:14px;
+}
+
+.preview-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:30px;
+}
+
+.preview-card{
+    background:#faf4f7;
+    padding:20px;
+    border-radius:18px;
+}
+
+.preview-card img{
+    width:100%;
+    border-radius:14px;
+}
+
+</style>
+
+<div class="settings-wrapper">
+
+
+    <div class="settings-card">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="save-settings">
+                Save Settings
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

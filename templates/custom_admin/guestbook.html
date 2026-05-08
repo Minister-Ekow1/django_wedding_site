@@ -1,0 +1,198 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.page-header{
+    margin-bottom:35px;
+}
+
+.page-header h1{
+    font-size:42px;
+    font-weight:700;
+}
+
+.page-header p{
+    color:#777;
+}
+
+.message-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:25px;
+}
+
+.message-card{
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    transition:0.3s;
+}
+
+.message-card:hover{
+    transform:translateY(-5px);
+}
+
+.message-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.message-name{
+    font-size:22px;
+    font-weight:700;
+}
+
+.status-pill{
+    padding:8px 14px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.approved{
+    background:#d4edda;
+    color:#155724;
+}
+
+.pending{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.message-text{
+    color:#666;
+    line-height:1.8;
+    margin-bottom:25px;
+}
+
+.message-date{
+    color:#999;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.action-row{
+    display:flex;
+    gap:12px;
+}
+
+.approve-btn{
+    background:#d63384;
+    color:white;
+    text-decoration:none;
+    padding:11px 16px;
+    border-radius:12px;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    text-decoration:none;
+    padding:11px 16px;
+    border-radius:12px;
+}
+
+.empty-box{
+    background:white;
+    border-radius:24px;
+    padding:70px;
+    text-align:center;
+    color:#888;
+}
+
+</style>
+
+<div class="page-header">
+
+  
+    <p>
+        Review and approve guest messages.
+    </p>
+
+</div>
+
+{% if messages %}
+
+<div class="message-grid">
+
+    {% for message in messages %}
+
+    <div class="message-card">
+
+        <div class="message-top">
+
+            <div class="message-name">
+                {{ message.name }}
+            </div>
+
+            {% if message.approved %}
+
+            <div class="status-pill approved">
+                Approved
+            </div>
+
+            {% else %}
+
+            <div class="status-pill pending">
+                Pending
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="message-text">
+
+            {{ message.message }}
+
+        </div>
+
+        <div class="message-date">
+
+            {{ message.created_at }}
+
+        </div>
+
+        <div class="action-row">
+
+            <a href="{% url 'custom_admin:guestbook_approve' message.id %}"
+               class="approve-btn">
+
+                {% if message.approved %}
+                    Unapprove
+                {% else %}
+                    Approve
+                {% endif %}
+
+            </a>
+
+            <a href="{% url 'custom_admin:guestbook_delete' message.id %}"
+               class="delete-btn">
+
+                Delete
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-box">
+
+    <h3>No Guestbook Messages Yet 💌</h3>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

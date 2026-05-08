@@ -1,0 +1,67 @@
+{% extends "custom_admin/base_admin.html" %}
+{% block content %}
+
+<style>
+
+.program-form{
+    max-width:850px;
+    margin:auto;
+}
+
+.program-card{
+    background:white;
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.program-card input,
+.program-card textarea{
+    width:100%;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:22px;
+}
+
+.program-card input:focus,
+.program-card textarea:focus{
+    outline:none;
+    border-color:#d63384;
+}
+
+.save-btn{
+    background:#d63384;
+    color:white;
+    border:none;
+    padding:14px 28px;
+    border-radius:14px;
+}
+
+</style>
+
+<div class="program-form">
+
+    <h1 class="mb-4">
+        Program Event 📅
+    </h1>
+
+    <div class="program-card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="save-btn">
+                Save Event
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

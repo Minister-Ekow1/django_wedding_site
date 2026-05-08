@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,12 +42,13 @@ INSTALLED_APPS = [
 
     'channels',
 
+    'custom_admin',
     'pages',
     'memories',
     'rsvp',
     'guestbook',
     'program',
-  'notifications',
+    'notifications',
 ]
 
 ASGI_APPLICATION = "wedding_site.asgi.application"
@@ -65,7 +65,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = "/cms/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_URL = "/accounts/login/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +81,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'wedding_site.urls'
 
-import os
 
 TEMPLATES = [
     {
@@ -92,6 +93,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'pages.context_processors.site_settings',
             ],
         },
     },
@@ -147,7 +150,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -157,115 +160,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # dev mode
 DEFAULT_FROM_EMAIL = 'wedding@site.com'
 
-JAZZMIN_SETTINGS = {
-    "site_title": "Odoyewu'27 Admin",
-    "site_header": "💍 Odoyewu Wedding Dashboard",
-    "site_brand": "Odoyewu'27",
-    "welcome_sign": "Welcome to Your Wedding Control Panel 💕",
-    "copyright": "Odoyewu-27",
-
-    # 🔗 TOP MENU
-    "topmenu_links": [
-        {"name": "🏠 Website", "url": "/", "new_window": True},
-        {"name": "📊 Dashboard", "url": "/admin"},
-        {"model": "auth.User"},
-    ],
-
-    # 📱 SIDEBAR
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": [],
-    "hide_models": [],
-
-    # 🎯 ORDERING (VERY IMPORTANT FOR CLEAN LOOK)
-    "order_with_respect_to": [
-        "pages",
-        "program",
-        "rsvp",
-        "guestbook",
-        "memories",
-        "auth",
-    ],
-
-    # 🎨 ICONS (UPGRADED)
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-
-        "pages": "fas fa-heart",
-        "pages.about": "fas fa-book-open",
-        "pages.venue": "fas fa-map-marker-alt",
-        "pages.lovestoryevent": "fas fa-heartbeat",
-
-        "rsvp": "fas fa-envelope-open-text",
-        "rsvp.rsvp": "fas fa-envelope",
-
-        "memories": "fas fa-images",
-        "memories.memory": "fas fa-camera-retro",
-
-        "guestbook": "fas fa-book",
-        "guestbook.message": "fas fa-comment-dots",
-
-        "program": "fas fa-calendar-alt",
-        "program.event": "fas fa-clock",
-        "program.programsettings": "fas fa-image",
-    },
-
-    #  SIDE MENU LINKS (QUICK ACCESS)
-    # "custom_links": {
-    #     "pages": [{
-    #         "name": "Edit About Page",
-    #         "url": "/admin/pages/about/",
-    #         "icon": "fas fa-edit",
-    #     },
-    #     {
-    #         "name": "Edit Venue",
-    #         "url": "/admin/pages/venue/",
-    #         "icon": "fas fa-map",
-    #     }],
-    # },
-"custom_css": "admin/custom.css",
-    # 🔍 SEARCH
-    "search_model": ["rsvp.RSVP"],
-
-    # 🧾 FOOTER
-    "show_ui_builder": False,
-
-    # 🎬 LOGIN SCREEN (NICE TOUCH)
-    "login_logo": None,
-    "login_message": "💖 Welcome back! Let's plan something beautiful.",
-
-    # 📦 MODEL ICON SIZE
-    "default_icon_parents": "fas fa-circle",
-    "default_icon_children": "fas fa-dot-circle",
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "navbar": "navbar-light navbar-pink",
-    "brand_colour": "navbar-pink",
-
-    "sidebar": "sidebar-dark-pink",
-    "accent": "accent-pink",
-
-    "navbar_small_text": False,
-    "footer_small_text": False,
-
-    "body_small_text": False,
-
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-
-    "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": False,
-
-    "sidebar_nav_legacy_style": False,
-
-    "button_classes": {
-        "primary": "btn btn-pink",
-        "secondary": "btn btn-secondary",
-        "info": "btn btn-info",
-        "warning": "btn btn-warning",
-        "danger": "btn btn-danger",
-        "success": "btn btn-success"
-    }
-}
