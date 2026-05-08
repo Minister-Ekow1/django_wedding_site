@@ -348,7 +348,21 @@
     <div class="col-mid">
       {% for image in images %}
       <div class="couple-img-wrap">
-        <img src="{{ image.image.url }}" class="couple-img" alt="Our photo together">
+        {% if image.image %}
+
+<img src="{{ image.image.url }}"
+     class="couple-img"
+     alt="Our photo together">
+
+{% else %}
+
+<div class="empty-image">
+
+    No Image Uploaded
+
+</div>
+
+{% endif %}
         <div class="img-caption">Together since the beginning</div>
       </div>
       {% endfor %}

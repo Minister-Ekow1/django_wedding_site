@@ -12,7 +12,11 @@ def home(request):
 def about(request):
     about = About.objects.first()
     timeline = LoveStoryEvent.objects.all()
-    images = AboutImage.objects.all()  # Add this line
+    images = AboutImage.objects.exclude(
+    image=""
+).exclude(
+    image=None
+)
 
     return render(request, 'pages/about.html', {
         'about': about,
