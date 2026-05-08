@@ -72,18 +72,17 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = (
-    'whitenoise.storage.CompressedStaticFilesStorage'
-)
+
+
 STORAGES = {
 
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
 
-   "staticfiles": {
-    "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-},
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
 
 LOGIN_REDIRECT_URL = "/cms/"
