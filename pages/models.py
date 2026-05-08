@@ -47,7 +47,10 @@ class SiteSettings(models.Model):
         max_length=100
     )
 
-    wedding_date = models.DateField()
+    wedding_date = models.DateField(
+    null=True,
+    blank=True
+  )
 
     logo = models.ImageField(
         upload_to="site/logo/",
