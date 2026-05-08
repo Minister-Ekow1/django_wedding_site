@@ -2,42 +2,40 @@
 {% block content %}
 
 <style>
+    .story-form {
+        max-width: 850px;
+        margin: auto;
+    }
 
-.story-form{
-    max-width:850px;
-    margin:auto;
-}
+    .story-card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
 
-.story-card{
-    background:white;
-    border-radius:24px;
-    padding:40px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.05);
-}
+    .story-card input,
+    .story-card textarea {
+        width: 100%;
+        border: 1px solid #eee;
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 22px;
+    }
 
-.story-card input,
-.story-card textarea{
-    width:100%;
-    border:1px solid #eee;
-    border-radius:14px;
-    padding:14px;
-    margin-bottom:22px;
-}
+    .story-card input:focus,
+    .story-card textarea:focus {
+        outline: none;
+        border-color: #d63384;
+    }
 
-.story-card input:focus,
-.story-card textarea:focus{
-    outline:none;
-    border-color:#d63384;
-}
-
-.save-btn{
-    background:#d63384;
-    color:white;
-    border:none;
-    padding:14px 28px;
-    border-radius:14px;
-}
-
+    .save-btn {
+        background: #d63384;
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 14px;
+    }
 </style>
 
 <div class="story-form">
@@ -47,15 +45,14 @@
     </h1>
 
     <div class="story-card">
-
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
 
             {% csrf_token %}
 
             {{ form.as_p }}
 
             <button class="save-btn">
-                Save Event
+                Save Image
             </button>
 
         </form>
